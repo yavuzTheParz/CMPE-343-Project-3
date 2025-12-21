@@ -1,0 +1,15 @@
+# Derlenmiş dosyalar (bunları istemiyoruz)
+bin/
+*.class
+
+# IDE Ayarları (herkesin ayarı kendine)
+.vscode/
+.idea/
+*.iml
+
+# İşletim sistemi çöpleri
+.DS_Store
+Thumbs.db
+
+# Loglar
+*.log
