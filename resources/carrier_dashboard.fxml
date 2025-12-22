@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" 
+            fx:controller="main.controllers.CarrierController"
+            prefWidth="800" prefHeight="500">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-background-color: #2980b9; -fx-padding: 15;">
+            <Label text="CARRIER DASHBOARD" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 20px;"/>
+            <Label text="(Pending Orders)" style="-fx-text-fill: #bdc3c7; -fx-font-style: italic;"/>
+            <Region HBox.hgrow="ALWAYS" />
+            <Button text="Logout" onAction="#handleLogout" style="-fx-background-color: #c0392b; -fx-text-fill: white;"/>
+        </HBox>
+    </top>
+
+    <center>
+        <TableView fx:id="orderTable">
+            <columns>
+                <TableColumn fx:id="colId" text="Order ID" prefWidth="80"/>
+                <TableColumn fx:id="colUser" text="Customer" prefWidth="150"/>
+                <TableColumn fx:id="colTotal" text="Total ($)" prefWidth="100"/>
+                <TableColumn fx:id="colDate" text="Date" prefWidth="200"/>
+                <TableColumn fx:id="colStatus" text="Status" prefWidth="100"/>
+            </columns>
+            <BorderPane.margin>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </BorderPane.margin>
+            <placeholder>
+                <Label text="No pending orders. Good job!"/>
+            </placeholder>
+        </TableView>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" style="-fx-padding: 20;">
+            <Button text="Mark as DELIVERED 🚚" onAction="#handleDeliver" 
+                    style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>
