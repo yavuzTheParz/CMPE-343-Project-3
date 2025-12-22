@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" 
+            fx:controller="main.controllers.CustomerController"
+            prefWidth="900" prefHeight="600">
+
+    <top>
+        <VBox alignment="CENTER" spacing="5" style="-fx-background-color: #2c3e50; -fx-padding: 20;">
+            <Label text="Local Greengrocer Market" 
+                   style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+            <Label text="Select fresh products and add them to your cart" 
+                   style="-fx-font-size: 14px; -fx-text-fill: #bdc3c7;"/>
+        </VBox>
+    </top>
+
+    <center>
+        <TableView fx:id="productTable">
+            <columns>
+                <TableColumn fx:id="colName" text="Product Name" prefWidth="300"/>
+                <TableColumn fx:id="colCategory" text="Category" prefWidth="150"/>
+                <TableColumn fx:id="colPrice" text="Price ($/kg)" prefWidth="120"/>
+                <TableColumn fx:id="colStock" text="Stock (kg)" prefWidth="120"/>
+            </columns>
+            <BorderPane.margin>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </BorderPane.margin>
+            <placeholder>
+                <Label text="No products available in the market currently."/>
+            </placeholder>
+        </TableView>
+    </center>
+    
+    <bottom>
+        <HBox alignment="CENTER_RIGHT" spacing="20" style="-fx-padding: 20; -fx-background-color: #ecf0f1; -fx-border-color: #bdc3c7; -fx-border-width: 1 0 0 0;">
+             
+             <Button text="Go to Checkout (Cart)" 
+                     onAction="#openCartScreen"
+                     style="-fx-background-color: #e67e22; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px; -fx-cursor: hand;"/>
+             
+             <Region HBox.hgrow="ALWAYS" />
+             
+             <Label text="Quantity will be asked ->" style="-fx-text-fill: #7f8c8d; -fx-font-style: italic;"/>
+             
+             <Button text="+ Add to Cart" 
+                     onAction="#handleAddToCart" 
+                     style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px; -fx-cursor: hand;"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>

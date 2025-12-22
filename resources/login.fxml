@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
-<VBox spacing="10" alignment="CENTER" xmlns:fx="http://javafx.com/fxml" fx:controller="sample.LoginController">
-    <TextField fx:id="usernameField" promptText="Enter Username" />
-    <PasswordField fx:id="passwordField" promptText="Enter Password" />
-    <Button text="Login" onAction="#handleLogin" />
+<VBox xmlns:fx="http://javafx.com/fxml" 
+      fx:controller="main.controllers.LoginController"
+      alignment="CENTER" spacing="15" 
+      style="-fx-padding: 40; -fx-background-color: #ecf0f1;">
+
+    <Label text="Greengrocer Login" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+
+    <TextField fx:id="usernameField" promptText="Username" maxWidth="250"/>
+    <PasswordField fx:id="passwordField" promptText="Password" maxWidth="250"/>
+
+    <Button fx:id="loginButton" text="Login" onAction="#handleLogin" 
+            style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;" 
+            maxWidth="250"/>
+
+    <Label fx:id="errorLabel" text="" style="-fx-text-fill: red;"/>
+
 </VBox>

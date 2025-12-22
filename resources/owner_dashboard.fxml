@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" 
+            fx:controller="main.controllers.OwnerController"
+            prefWidth="900" prefHeight="600">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-background-color: #8e44ad; -fx-padding: 15;">
+            <Label text="OWNER DASHBOARD" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 20px;"/>
+            <Region HBox.hgrow="ALWAYS" />
+            <Button text="Logout" onAction="#handleLogout" style="-fx-background-color: #c0392b; -fx-text-fill: white;"/>
+        </HBox>
+    </top>
+
+    <center>
+        <TableView fx:id="productTable">
+            <columns>
+                <TableColumn fx:id="colName" text="Name" prefWidth="200"/>
+                <TableColumn fx:id="colCategory" text="Category" prefWidth="120"/>
+                <TableColumn fx:id="colPrice" text="Price ($)" prefWidth="100"/>
+                <TableColumn fx:id="colStock" text="Stock (kg)" prefWidth="100"/>
+            </columns>
+            <BorderPane.margin>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </BorderPane.margin>
+        </TableView>
+    </center>
+
+    <right>
+        <VBox spacing="15" style="-fx-padding: 20; -fx-background-color: #ecf0f1; -fx-border-color: #bdc3c7; -fx-border-width: 0 0 0 1;" prefWidth="300">
+            <Label text="Product Management" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+            
+            <Separator />
+            
+            <Label text="Product Name:"/>
+            <TextField fx:id="nameField" promptText="e.g. Red Apple"/>
+            
+            <Label text="Category:"/>
+            <ComboBox fx:id="categoryBox" prefWidth="300" promptText="Select Type"/>
+            
+            <Label text="Price ($/kg):"/>
+            <TextField fx:id="priceField" promptText="0.00"/>
+            
+            <Label text="Stock (kg):"/>
+            <TextField fx:id="stockField" promptText="0"/>
+            
+            <Separator />
+            
+            <HBox spacing="10" alignment="CENTER">
+                <Button text="Add New" onAction="#handleAdd" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold;" prefWidth="90"/>
+                <Button text="Update" onAction="#handleUpdate" style="-fx-background-color: #f39c12; -fx-text-fill: white; -fx-font-weight: bold;" prefWidth="90"/>
+            </HBox>
+            
+            <Button text="Delete Selected" onAction="#handleDelete" style="-fx-background-color: #e74c3c; -fx-text-fill: white;" maxWidth="Infinity"/>
+            
+            <Label text="* To Update/Delete, select from table first." wrapText="true" style="-fx-text-fill: #7f8c8d; -fx-font-size: 11px;"/>
+        </VBox>
+    </right>
+
+</BorderPane>
