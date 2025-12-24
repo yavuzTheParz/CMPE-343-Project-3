@@ -19,5 +19,5 @@
             maxWidth="250"/>
 
     <Label fx:id="errorLabel" text="" style="-fx-text-fill: red;"/>
-
+    <Hyperlink text="Create a new account" onAction="#openRegisterScreen" style="-fx-text-fill: #2980b9; -fx-underline: true;"/>
 </VBox>

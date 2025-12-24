@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" 
+            fx:controller="main.controllers.AnalyticsController"
+            prefWidth="600" prefHeight="500">
+
+    <top>
+        <VBox alignment="CENTER" style="-fx-background-color: #8e44ad; -fx-padding: 15;">
+            <Label text="Sales Analytics" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 18px;"/>
+        </VBox>
+    </top>
+
+    <center>
+        <PieChart fx:id="salesPieChart" legendSide="BOTTOM" title="Total Sales by Product (kg)"/>
+    </center>
+
+    <bottom>
+        <HBox alignment="CENTER" style="-fx-padding: 10;">
+            <Button text="Close" onAction="#handleClose" style="-fx-background-color: #c0392b; -fx-text-fill: white;"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>

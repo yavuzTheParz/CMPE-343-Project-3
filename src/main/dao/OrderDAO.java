@@ -147,4 +147,52 @@ public class OrderDAO {
             e.printStackTrace();
         }
     }
+    public static ObservableList<main.models.Order> getOrdersByUsername(String username) {
+        ObservableList<main.models.Order> orders = javafx.collections.FXCollections.observableArrayList();
+        String query = "SELECT * FROM orders WHERE username = ? ORDER BY order_date DESC"; // En yeniden eskiye
+
+        try (Connection conn = DatabaseAdapter.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            
+            stmt.setString(1, username);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    orders.add(new main.models.Order(
+                            rs.getInt("id"),
+                            rs.getString("username"),
+                            rs.getDouble("total_price"),
+                            rs.getTimestamp("order_date").toString(),
+                            rs.getString("status")
+                    ));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return orders;
+    }
+    public static javafx.collections.ObservableList<javafx.scene.chart.PieChart.Data> getProductSalesStats() {
+        javafx.collections.ObservableList<javafx.scene.chart.PieChart.Data> pieData = javafx.collections.FXCollections.observableArrayList();
+        
+        // SQL Büyüsü: Grupla ve Topla
+        String query = "SELECT product_name, SUM(quantity) as total_sold FROM order_items GROUP BY product_name";
+
+        try (Connection conn = DatabaseAdapter.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                String name = rs.getString("product_name");
+                double amount = rs.getDouble("total_sold");
+                
+                // Grafik verisi oluştur
+                pieData.add(new javafx.scene.chart.PieChart.Data(name, amount));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return pieData;
+    }
 }

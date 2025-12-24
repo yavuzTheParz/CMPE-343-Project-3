@@ -57,7 +57,12 @@
             
             <Button text="Delete Selected" onAction="#handleDelete" style="-fx-background-color: #e74c3c; -fx-text-fill: white;" maxWidth="Infinity"/>
             
-            <Label text="* To Update/Delete, select from table first." wrapText="true" style="-fx-text-fill: #7f8c8d; -fx-font-size: 11px;"/>
+            <Separator />
+            
+            <Button text="View Sales Analytics 📊" onAction="#openAnalytics" 
+                    style="-fx-background-color: #8e44ad; -fx-text-fill: white; -fx-font-weight: bold;" 
+                    maxWidth="Infinity" prefHeight="40"/>
+                    
         </VBox>
     </right>
 

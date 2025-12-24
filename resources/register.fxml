@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" 
+      fx:controller="main.controllers.RegisterController"
+      alignment="CENTER" spacing="15" 
+      style="-fx-padding: 40; -fx-background-color: #ecf0f1;"
+      prefWidth="400" prefHeight="550">
+
+    <Label text="Join the Greengrocer!" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+    
+    <Separator prefWidth="200" />
+
+    <Label text="Username:"/>
+    <TextField fx:id="usernameField" promptText="Choose a username" maxWidth="300"/>
+
+    <Label text="Email:"/>
+    <TextField fx:id="emailField" promptText="example@mail.com" maxWidth="300"/>
+
+    <Label text="I want to be a:"/>
+    <ComboBox fx:id="roleBox" maxWidth="300"/>
+
+    <Label text="Password:"/>
+    <PasswordField fx:id="passwordField" promptText="Secret password" maxWidth="300"/>
+
+    <Label text="Confirm Password:"/>
+    <PasswordField fx:id="confirmPasswordField" promptText="Repeat password" maxWidth="300"/>
+
+    <Region prefHeight="10"/>
+
+    <Button text="Register Now" onAction="#handleRegister" 
+            style="-fx-background-color: #2980b9; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;" 
+            maxWidth="300"/>
+
+    <Hyperlink text="Already have an account? Login here." onAction="#handleBack" style="-fx-text-fill: #7f8c8d;"/>
+
+</VBox>

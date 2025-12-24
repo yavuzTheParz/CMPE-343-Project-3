@@ -85,4 +85,8 @@ public class LoginController { // İstersek buna da 'extends BaseController' diy
             errorLabel.setText("Error loading screen: " + fxml);
         }
     }
+    @FXML
+    private void openRegisterScreen() {
+        navigate("/register.fxml", "Register New User");
+    }
 }
