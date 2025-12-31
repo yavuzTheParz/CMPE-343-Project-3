@@ -2,106 +2,101 @@ package main.dao;
 
 import main.DatabaseAdapter;
 import main.models.Product;
-import main.models.Fruit;
-import main.models.Vegetable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.image.Image;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.sql.*;
 
 public class ProductDAO {
 
-    // Tüm ürünleri (Meyve/Sebze) getirir
     public static ObservableList<Product> getAllProducts() {
-        ObservableList<Product> products = FXCollections.observableArrayList();
+        ObservableList<Product> list = FXCollections.observableArrayList();
         String query = "SELECT * FROM products";
-
         try (Connection conn = DatabaseAdapter.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
-
+             ResultSet rs = conn.createStatement().executeQuery(query)) {
             while (rs.next()) {
-                int id = rs.getInt("id");
-                String name = rs.getString("name");
-                double price = rs.getDouble("price_per_kg");
-                double stock = rs.getDouble("stock_kg");
-                String category = rs.getString("category");
-
-                Product product;
-                // Polymorphism: Kategoriye göre nesne oluştur
-                if ("Fruit".equalsIgnoreCase(category)) {
-                    product = new Fruit(id, name, price, stock);
-                } else {
-                    product = new Vegetable(id, name, price, stock);
+                Product p = new Product(
+                    rs.getInt("id"),
+                    rs.getString("name"),
+                    rs.getString("category"),
+                    rs.getDouble("price"),
+                    rs.getDouble("stock_kg"),
+                    rs.getDouble("threshold")
+                );
+                
+                InputStream is = rs.getBinaryStream("image_blob");
+                if (is != null) {
+                    p.setImage(new Image(is));
                 }
                 
-                products.add(product);
+                list.add(p);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return products;
+        } catch (SQLException e) { e.printStackTrace(); }
+        return list;
     }
 
-    // 1. ADD PRODUCT
-    public static void addProduct(String name, String category, double price, double stock) {
-        String query = "INSERT INTO products (name, category, price_per_kg, stock_kg) VALUES (?, ?, ?, ?)";
+    public static void addProduct(String name, String category, double price, double stock, double threshold, File imageFile) {
+        String query = "INSERT INTO products (name, category, price, stock_kg, threshold, image_blob) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection conn = DatabaseAdapter.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
-            
             stmt.setString(1, name);
-            stmt.setString(2, category); // 'Fruit' or 'Vegetable'
+            stmt.setString(2, category);
             stmt.setDouble(3, price);
             stmt.setDouble(4, stock);
-            stmt.executeUpdate();
+            stmt.setDouble(5, threshold);
             
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+            if (imageFile != null) {
+                FileInputStream fis = new FileInputStream(imageFile);
+                stmt.setBinaryStream(6, fis, (int) imageFile.length());
+            } else {
+                stmt.setNull(6, Types.BLOB);
+            }
+            
+            stmt.executeUpdate();
+            LoggerDAO.log("ADD_PRODUCT", "Product added: " + name);
+        } catch (Exception e) { e.printStackTrace(); }
     }
 
-    // 2. UPDATE PRODUCT
-    public static void updateProduct(int id, double price, double stock) {
-        String query = "UPDATE products SET price_per_kg = ?, stock_kg = ? WHERE id = ?";
+    // --- GÜNCELLENEN METOD: RESİM GÜNCELLEME DESTEĞİ ---
+    public static void updateProduct(int id, double price, double stock, double threshold, File imageFile) {
+        // Eğer yeni resim seçildiyse onu da güncelle, seçilmediyse sadece diğerlerini güncelle
+        String query;
+        if (imageFile != null) {
+            query = "UPDATE products SET price = ?, stock_kg = ?, threshold = ?, image_blob = ? WHERE id = ?";
+        } else {
+            query = "UPDATE products SET price = ?, stock_kg = ?, threshold = ? WHERE id = ?";
+        }
+
         try (Connection conn = DatabaseAdapter.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             
             stmt.setDouble(1, price);
             stmt.setDouble(2, stock);
-            stmt.setInt(3, id);
-            stmt.executeUpdate();
+            stmt.setDouble(3, threshold);
             
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+            if (imageFile != null) {
+                FileInputStream fis = new FileInputStream(imageFile);
+                stmt.setBinaryStream(4, fis, (int) imageFile.length());
+                stmt.setInt(5, id);
+            } else {
+                stmt.setInt(4, id);
+            }
+            
+            stmt.executeUpdate();
+            LoggerDAO.log("UPDATE_PRODUCT", "Updated Product ID: " + id);
+        } catch (Exception e) { e.printStackTrace(); }
     }
-
-    // 3. DELETE PRODUCT
+    
     public static void deleteProduct(int id) {
         String query = "DELETE FROM products WHERE id = ?";
         try (Connection conn = DatabaseAdapter.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
-            
             stmt.setInt(1, id);
             stmt.executeUpdate();
-            
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // Stok güncelleme metodu (BURADA OLMALI)
-    public static void updateStock(int productId, double quantitySold) {
-        String query = "UPDATE products SET stock_kg = stock_kg - ? WHERE id = ?";
-        
-        try (Connection conn = DatabaseAdapter.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(query)) {
-            
-            stmt.setDouble(1, quantitySold);
-            stmt.setInt(2, productId);
-            stmt.executeUpdate();
-            
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+            LoggerDAO.log("DELETE_PRODUCT", "Deleted Product ID: " + id);
+        } catch (SQLException e) { e.printStackTrace(); }
     }
 }

@@ -1,53 +1,44 @@
 package main.models;
 
-import javafx.beans.property.*;
+import javafx.scene.image.Image;
 
 public class Product {
-    private final IntegerProperty id;
-    private final StringProperty name;
-    private final StringProperty category;
-    private final DoubleProperty price;
-    private final DoubleProperty stock;
-    private final DoubleProperty threshold; // <-- YENİ ÖZELLİK
+    private int id;
+    private String name;
+    private String category;
+    private double price;
+    private double stock;
+    private double threshold;
+    private Image image;
 
-    // Constructor Güncellendi
     public Product(int id, String name, String category, double price, double stock, double threshold) {
-        this.id = new SimpleIntegerProperty(id);
-        this.name = new SimpleStringProperty(name);
-        this.category = new SimpleStringProperty(category);
-        this.price = new SimpleDoubleProperty(price);
-        this.stock = new SimpleDoubleProperty(stock);
-        this.threshold = new SimpleDoubleProperty(threshold);
+        this.id = id;
+        this.name = name;
+        this.category = category;
+        this.price = price;
+        this.stock = stock;
+        this.threshold = threshold;
     }
 
-    // --- KRİTİK İŞ MANTIĞI: MÜŞTERİ HANGİ FİYATI GÖRÜR? ---
-    // Eğer stok, eşik değerinin altındaysa fiyat 2 katına çıkar! [cite: 55, 56]
+    // --- EKSİK OLAN SETTER ---
+    public void setStock(double stock) {
+        this.stock = stock;
+    }
+    // -------------------------
+
+    public Image getImage() { return image; }
+    public void setImage(Image image) { this.image = image; }
+
     public double getEffectivePrice() {
-        if (getStock() <= getThreshold() && getThreshold() > 0) {
-            return getPrice() * 2;
-        }
-        return getPrice();
+        if (this.stock <= this.threshold) return this.price * 2;
+        return this.price;
     }
-    // --------------------------------------------------------
 
-    public String getCategoryType() {
-        String rawCategory = category.get();
-        if (rawCategory == null) return "";
-        if (rawCategory.equalsIgnoreCase("Fruit")) return "Fruit 🍎";
-        else if (rawCategory.equalsIgnoreCase("Vegetable")) return "Vegetable 🥕";
-        else return rawCategory;
-    }
-    
-    // Normal Getter (Patron ham fiyatı görür)
-    public String getCategory() { return category.get(); }
-    public int getId() { return id.get(); }
-    public String getName() { return name.get(); }
-    public double getPrice() { return price.get(); }
-    public double getStock() { return stock.get(); }
-    public double getThreshold() { return threshold.get(); } // <-- YENİ GETTER
-
-    // Property Erişimcileri
-    public StringProperty nameProperty() { return name; }
-    public DoubleProperty priceProperty() { return price; }
-    public DoubleProperty stockProperty() { return stock; }
+    public int getId() { return id; }
+    public String getName() { return name; }
+    public String getCategory() { return category; }
+    public double getPrice() { return price; }
+    public double getStock() { return stock; }
+    public double getThreshold() { return threshold; }
+    public String getCategoryType() { return category; }
 }

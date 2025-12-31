@@ -20,18 +20,29 @@ public abstract class BaseController {
         alert.showAndWait();
     }
 
-    // 2. Ortak Sahne Değiştirme Metodu (Logout vb. için)
-    protected void changeScene(Node sourceNode, String fxmlPath, String title) {
+   // BaseController içindeki changeScene metodunu BUL ve bununla DEĞİŞTİR:
+    
+    protected void changeScene(javafx.scene.Node node, String fxmlPath, String title) {
         try {
-            Stage stage = (Stage) sourceNode.getScene().getWindow();
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Parent root = loader.load();
-            stage.setScene(new Scene(root));
-            if (title != null) stage.setTitle(title);
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource(fxmlPath));
+            javafx.scene.Parent root = loader.load();
+            
+            javafx.stage.Stage stage = (javafx.stage.Stage) node.getScene().getWindow();
+            javafx.scene.Scene scene = new javafx.scene.Scene(root);
+            
+            // --- YENİ EKLENEN KISIM: CSS YÜKLEME ---
+            String css = getClass().getResource("/styles.css").toExternalForm();
+            scene.getStylesheets().add(css);
+            // ---------------------------------------
+            
+            stage.setScene(scene);
+            stage.setTitle(title);
+            stage.centerOnScreen();
             stage.show();
-        } catch (IOException e) {
+            
+        } catch (java.io.IOException e) {
             e.printStackTrace();
-            showAlert("Navigation Error", "Could not load: " + fxmlPath);
+            showAlert("Navigation Error", "Cannot load page: " + fxmlPath);
         }
     }
 }

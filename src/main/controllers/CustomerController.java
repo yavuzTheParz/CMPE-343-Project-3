@@ -3,193 +3,197 @@ package main.controllers;
 import main.dao.ProductDAO;
 import main.models.Product;
 import main.models.ShoppingCart;
+import main.models.UserSession;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Stage;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.scene.image.ImageView;
+import javafx.scene.control.*; 
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
-import java.util.Optional;
+import javafx.util.Callback;
 import java.io.IOException;
 
 public class CustomerController extends BaseController {
 
+    @FXML private Label welcomeLabel;
+    
+    @FXML private TextField searchField;
+    @FXML private ComboBox<String> categoryFilterBox;
+
     @FXML private TableView<Product> productTable;
+    @FXML private TableColumn<Product, Product> colImage;
     @FXML private TableColumn<Product, String> colName;
     @FXML private TableColumn<Product, String> colCategory;
     @FXML private TableColumn<Product, Double> colPrice;
     @FXML private TableColumn<Product, Double> colStock;
+    @FXML private TableColumn<Product, Void> colAction;
 
-    // Arama ve Filtreleme bileşenleri
-    @FXML private TextField searchField;
-    @FXML private ComboBox<String> categoryFilter;
-
-    // Listeleri yönetmek için değişkenler
     private ObservableList<Product> masterData = FXCollections.observableArrayList();
-
-    public void start(Stage stage) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/customer_dashboard.fxml"));
-        Parent root = loader.load();
-        
-        CustomerController controller = loader.getController();
-        controller.loadProductData();
-
-        stage.setTitle("Customer Dashboard");
-        stage.setScene(new Scene(root));
-        stage.show();
-    }
 
     @FXML
     public void initialize() {
-        // 1. Tablo Sütunlarını Bağla
-        colName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        colPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
-        colStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
-        colCategory.setCellValueFactory(cellData -> 
-            new SimpleStringProperty(cellData.getValue().getCategoryType())
-        );
-
-        // 2. Filtre Kutusunu Doldur
-        categoryFilter.getItems().addAll("All", "Fruit", "Vegetable");
-        categoryFilter.setValue("All");
-
-        // 3. Verileri Yükle ve Dinleyicileri (Listeners) Başlat
+        if (UserSession.getInstance() != null) {
+            welcomeLabel.setText("Welcome, " + UserSession.getInstance().getUsername());
+        }
+        setupTableColumns();
+        setupFilters();
+        addButtonToTable();
         loadProductData();
     }
 
-    public void loadProductData() {
-        // Veritabanından ham veriyi çek
-        masterData.clear();
-        masterData.addAll(ProductDAO.getAllProducts());
+    private void setupTableColumns() {
+        colImage.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue()));
+        colImage.setCellFactory(column -> new TableCell<Product, Product>() {
+            private final ImageView imageView = new ImageView();
+            @Override
+            protected void updateItem(Product item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null || item.getImage() == null) {
+                    setGraphic(null);
+                } else {
+                    imageView.setImage(item.getImage());
+                    imageView.setFitWidth(50); 
+                    imageView.setFitHeight(50);
+                    imageView.setPreserveRatio(true);
+                    setGraphic(imageView);
+                }
+            }
+        });
 
-        // --- FİLTRELEME MANTIĞI (SİHİRLİ KISIM) ---
-        
-        // 1. Orijinal listeyi bir 'FilteredList' içine sar
+        colName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        colPrice.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getEffectivePrice()));
+        colStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        colCategory.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getCategoryType()));
+    }
+
+    private void setupFilters() {
+        categoryFilterBox.getItems().addAll("All", "Fruit", "Vegetable");
+        categoryFilterBox.setValue("All");
+
         FilteredList<Product> filteredData = new FilteredList<>(masterData, p -> true);
 
-        // 2. Arama kutusu her değiştiğinde filtreyi güncelle
         searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-            filteredData.setPredicate(product -> checkFilter(product, newValue, categoryFilter.getValue()));
+            filteredData.setPredicate(product -> createPredicate(product, newValue, categoryFilterBox.getValue()));
         });
 
-        // 3. Kategori kutusu her değiştiğinde filtreyi güncelle
-        categoryFilter.valueProperty().addListener((observable, oldValue, newValue) -> {
-            filteredData.setPredicate(product -> checkFilter(product, searchField.getText(), newValue));
+        categoryFilterBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(product -> createPredicate(product, searchField.getText(), newValue));
         });
 
-        // 4. Filtrelenmiş listeyi sıralanabilir (SortedList) yap (Tıklayınca sıralama bozulmasın diye)
         SortedList<Product> sortedData = new SortedList<>(filteredData);
         sortedData.comparatorProperty().bind(productTable.comparatorProperty());
-
-        // 5. Tabloya bu akıllı listeyi ver
         productTable.setItems(sortedData);
+        
+        productTable.getSortOrder().add(colName);
+        colName.setSortType(TableColumn.SortType.ASCENDING);
+        productTable.sort();
     }
 
-    // Yardımcı Metod: Bir ürün, arama kriterlerine uyuyor mu?
-    private boolean checkFilter(Product product, String searchText, String categoryChoice) {
-        // 1. Kategori Kontrolü
-        boolean categoryMatch = true;
-        if (categoryChoice != null && !categoryChoice.equals("All")) {
-            // Veritabanındaki ham kategori ismine bak ("Fruit" veya "Vegetable")
-            categoryMatch = product.getCategory().equalsIgnoreCase(categoryChoice);
-        }
-
-        // 2. İsim Arama Kontrolü
-        boolean searchMatch = true;
+    private boolean createPredicate(Product product, String searchText, String selectedCategory) {
+        boolean matchesSearch = true;
+        boolean matchesCategory = true;
         if (searchText != null && !searchText.isEmpty()) {
-            String lowerCaseFilter = searchText.toLowerCase();
-            searchMatch = product.getName().toLowerCase().contains(lowerCaseFilter);
+            matchesSearch = product.getName().toLowerCase().contains(searchText.toLowerCase());
         }
-
-        return categoryMatch && searchMatch;
+        if (selectedCategory != null && !selectedCategory.equals("All")) {
+            matchesCategory = product.getCategory().equalsIgnoreCase(selectedCategory);
+        }
+        return matchesSearch && matchesCategory;
     }
 
-    // --- BUTON İŞLEVLERİ ---
+    public void loadProductData() {
+        masterData.clear();
+        masterData.addAll(ProductDAO.getAllProducts());
+    }
 
-    @FXML
-    private void handleAddToCart() {
-        Product selectedProduct = productTable.getSelectionModel().getSelectedItem();
+    private void addButtonToTable() {
+        Callback<TableColumn<Product, Void>, TableCell<Product, Void>> cellFactory = new Callback<>() {
+            @Override
+            public TableCell<Product, Void> call(final TableColumn<Product, Void> param) {
+                return new TableCell<>() {
+                    private final Button btn = new Button("Add ➕");
+                    {
+                        btn.setStyle("-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold;");
+                        btn.setOnAction(event -> {
+                            Product product = getTableView().getItems().get(getIndex());
+                            handleAddToCart(product);
+                        });
+                    }
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) { setGraphic(null); } else { setGraphic(btn); }
+                    }
+                };
+            }
+        };
+        colAction.setCellFactory(cellFactory);
+    }
 
-        if (selectedProduct == null) {
-            showAlert("No Selection", "Please select a product from the table.");
-            return;
-        }
-
-        if (selectedProduct.getStock() <= 0) {
+    private void handleAddToCart(Product product) {
+        if (product.getStock() <= 0) {
             showAlert("Out of Stock", "Sorry, this product is currently unavailable.");
             return;
         }
-
         TextInputDialog dialog = new TextInputDialog("1");
         dialog.setTitle("Add to Cart");
-        dialog.setHeaderText("Adding: " + selectedProduct.getName());
+        dialog.setHeaderText("Add " + product.getName() + " to your cart");
         dialog.setContentText("Enter quantity (kg):");
-
-        Optional<String> result = dialog.showAndWait();
-
-        result.ifPresent(quantityStr -> {
+        dialog.showAndWait().ifPresent(input -> {
             try {
-                double quantity = Double.parseDouble(quantityStr);
-                if (quantity <= 0) {
-                    showAlert("Invalid Quantity", "Please enter a positive number.");
-                    return;
+                double quantity = Double.parseDouble(input);
+                if (quantity <= 0) showAlert("Invalid Quantity", "Positive number required.");
+                else if (quantity > product.getStock()) showAlert("Insufficient Stock", "Only " + product.getStock() + " kg available.");
+                else {
+                    ShoppingCart.addItem(product, quantity);
+                    showAlert("Added", quantity + " kg added.");
                 }
-                if (quantity > selectedProduct.getStock()) {
-                    showAlert("Stock Limit", "We only have " + selectedProduct.getStock() + "kg in stock.");
-                    return;
-                }
-                
-                ShoppingCart.addItem(selectedProduct, quantity);
-                showAlert("Added to Cart", quantity + "kg of " + selectedProduct.getName() + " added to your cart.");
-
-            } catch (NumberFormatException e) {
-                showAlert("Invalid Input", "Please enter a valid number.");
-            }
+            } catch (NumberFormatException e) { showAlert("Invalid Input", "Enter a valid number."); }
         });
     }
 
-    @FXML
-    private void openCartScreen() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/cart.fxml"));
-            Parent root = loader.load();
-            main.controllers.CartController cartController = loader.getController();
-            cartController.setParentController(this);
-            Stage stage = new Stage();
-            stage.setTitle("My Shopping Cart");
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert("Error", "Could not open cart screen.");
-        }
-    }
+    @FXML private void openCart() { openScreen("/cart.fxml", "My Shopping Cart"); }
+    @FXML private void openMyOrders() { openScreen("/my_orders.fxml", "My Past Orders"); }
+    @FXML private void openProfile() { openScreen("/profile.fxml", "My Profile"); }
 
-    @FXML
-    private void openMyOrders() {
+    private void openScreen(String fxml, String title) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/my_orders.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
             Parent root = loader.load();
+            if (fxml.contains("cart")) {
+                CartController cc = loader.getController();
+                cc.setParentController(this);
+            }
             Stage stage = new Stage();
-            stage.setTitle("My Past Orders");
+            stage.setTitle(title);
             stage.setScene(new Scene(root));
+            if (getClass().getResource("/styles.css") != null)
+                stage.getScene().getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
             stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert("Error", "Could not open orders screen.");
-        }
+        } catch (IOException e) { e.printStackTrace(); showAlert("Error", "Could not open screen: " + fxml); }
     }
 
     @FXML
     private void handleLogout() {
-        // BaseController'dan gelen metod
-        // Not: productTable bir Node olduğu için sahne değişiminde referans olarak kullanılabilir
-        changeScene(productTable, "/login.fxml", "Login");
+        if (UserSession.getInstance() != null) UserSession.cleanUserSession();
+        if (welcomeLabel.getScene() != null) welcomeLabel.getScene().getWindow().hide();
+        
+        // --- DÜZELTİLEN KISIM ---
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/login.fxml"));
+            Parent root = loader.load();
+            Stage stage = new Stage(); // Önce Stage oluştur
+            stage.setScene(new Scene(root)); // Sonra Sahneyi ata
+            stage.show(); // En son göster
+        } catch(Exception e) { e.printStackTrace(); }
+        // ------------------------
     }
 }

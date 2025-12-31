@@ -2,40 +2,19 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.geometry.Insets?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" 
-            fx:controller="main.controllers.MyOrdersController"
-            prefWidth="600" prefHeight="400">
+<VBox xmlns:fx="http://javafx.com/fxml" 
+      fx:controller="main.controllers.MyOrdersController"
+      spacing="10" style="-fx-padding: 20; -fx-background-color: white;">
 
-    <top>
-        <VBox alignment="CENTER" style="-fx-background-color: #34495e; -fx-padding: 15;">
-            <Label text="My Order History" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 18px;"/>
-        </VBox>
-    </top>
+    <Label text="My Past Orders 📜" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+    
+    <ListView fx:id="ordersList" VBox.vgrow="ALWAYS" prefHeight="300"/>
+    
+    <HBox spacing="10" alignment="CENTER">
+        <Button text="Cancel Order ❌" onAction="#handleCancelOrder" style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
+        <Button text="Rate Carrier ⭐" onAction="#handleRateCarrier" style="-fx-background-color: #f1c40f; -fx-text-fill: black;"/>
+        <Button text="Download Invoice 📄" onAction="#handleDownloadInvoice" style="-fx-background-color: #34495e; -fx-text-fill: white;"/>
+    </HBox>
 
-    <center>
-        <TableView fx:id="ordersTable">
-            <columns>
-                <TableColumn fx:id="colId" text="Order ID" prefWidth="80"/>
-                <TableColumn fx:id="colDate" text="Date &amp; Time" prefWidth="200"/>
-                <TableColumn fx:id="colTotal" text="Total ($)" prefWidth="100"/>
-                <TableColumn fx:id="colStatus" text="Status" prefWidth="120"/>
-            </columns>
-            <BorderPane.margin>
-                <Insets top="10" right="10" bottom="10" left="10"/>
-            </BorderPane.margin>
-            <placeholder>
-                <Label text="You haven't ordered anything yet."/>
-            </placeholder>
-        </TableView>
-    </center>
-
-    <bottom>
-        <HBox alignment="CENTER" spacing="20" style="-fx-padding: 15;">
-            <Button text="Refresh Status 🔄" onAction="#handleRefresh" style="-fx-background-color: #f1c40f; -fx-text-fill: black;"/>
-            <Button text="Close" onAction="#handleClose" style="-fx-background-color: #95a5a6; -fx-text-fill: white;"/>
-        </HBox>
-    </bottom>
-
-</BorderPane>
+</VBox>

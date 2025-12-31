@@ -6,19 +6,31 @@ import javafx.scene.Parent; // <-- BURASI DEĞİŞTİ (StackPane yerine Parent)
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+
 public class Main extends Application {
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        // FXML dosyasını yükle
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("login.fxml"));
+   @Override
+    public void start(Stage primaryStage) {
+        try {
+            // Veritabanını başlat
+            DatabaseAdapter.connect();
+            DatabaseAdapter.createTables(); // Tablolar yoksa oluştur
 
-        // StackPane yerine Parent kullanıyoruz ki VBox gelirse kızmasın
-        Parent root = loader.load();
+            // Login ekranını yükle
+            Parent root = FXMLLoader.load(getClass().getResource("/login.fxml"));
+            Scene scene = new Scene(root);
+            
+            // --- YENİ EKLENEN KISIM: CSS YÜKLEME ---
+            scene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
+            // ---------------------------------------
 
-        primaryStage.setTitle("Login Screen");
-        primaryStage.setScene(new Scene(root, 300, 275));
-        primaryStage.show();
+            primaryStage.setTitle("Greengrocer Management System");
+            primaryStage.setScene(scene);
+            primaryStage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {

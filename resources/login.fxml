@@ -7,17 +7,24 @@
 <VBox xmlns:fx="http://javafx.com/fxml" 
       fx:controller="main.controllers.LoginController"
       alignment="CENTER" spacing="15" 
-      style="-fx-padding: 40; -fx-background-color: #ecf0f1;">
+      style="-fx-background-color: #ecf0f1; -fx-padding: 30;">
 
-    <Label text="Greengrocer Login" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2c3e50;"/>
+    <Label text="GreenGrocer Login 🍏" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #27ae60;"/>
 
-    <TextField fx:id="usernameField" promptText="Username" maxWidth="250"/>
-    <PasswordField fx:id="passwordField" promptText="Password" maxWidth="250"/>
+    <VBox spacing="5" maxWidth="300">
+        <Label text="Username:"/>
+        <TextField fx:id="usernameField" promptText="Enter username"/>
+    </VBox>
 
-    <Button fx:id="loginButton" text="Login" onAction="#handleLogin" 
-            style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 14px;" 
-            maxWidth="250"/>
+    <VBox spacing="5" maxWidth="300">
+        <Label text="Password:"/>
+        <PasswordField fx:id="passwordField" promptText="Enter password"/>
+    </VBox>
 
-    <Label fx:id="errorLabel" text="" style="-fx-text-fill: red;"/>
-    <Hyperlink text="Create a new account" onAction="#openRegisterScreen" style="-fx-text-fill: #2980b9; -fx-underline: true;"/>
+    <Button text="Login" onAction="#handleLogin" 
+            maxWidth="300" style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10;"/>
+
+    <Hyperlink text="No account? Register here" onAction="#handleRegister" 
+               style="-fx-text-fill: #2980b9;"/>
+
 </VBox>
