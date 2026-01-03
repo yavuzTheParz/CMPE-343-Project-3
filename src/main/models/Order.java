@@ -10,6 +10,8 @@ public class Order {
     private final ObjectProperty<Timestamp> orderDate;
     private final StringProperty status;
     private final StringProperty carrier;
+    private final IntegerProperty carrierRating;
+    private final StringProperty carrierReview;
 
     public Order(int id, String username, double totalPrice, Timestamp orderDate, String status, String carrier) {
         this.id = new SimpleIntegerProperty(id);
@@ -18,6 +20,14 @@ public class Order {
         this.orderDate = new SimpleObjectProperty<>(orderDate);
         this.status = new SimpleStringProperty(status);
         this.carrier = new SimpleStringProperty(carrier);
+        this.carrierRating = new SimpleIntegerProperty(0);
+        this.carrierReview = new SimpleStringProperty("");
+    }
+    
+    public Order(int id, String username, double totalPrice, Timestamp orderDate, String status, String carrier, int rating, String review) {
+        this(id, username, totalPrice, orderDate, status, carrier);
+        this.carrierRating.set(rating);
+        this.carrierReview.set(review != null ? review : "");
     }
 
     // Getter Metodları
@@ -27,6 +37,8 @@ public class Order {
     public Timestamp getOrderDate() { return orderDate.get(); }
     public String getStatus() { return status.get(); }
     public String getCarrier() { return carrier.get(); }
+    public int getCarrierRating() { return carrierRating.get(); }
+    public String getCarrierReview() { return carrierReview.get(); }
 
     // Property Erişimcileri (TableView İçin)
     public IntegerProperty idProperty() { return id; }
@@ -34,4 +46,6 @@ public class Order {
     public DoubleProperty totalPriceProperty() { return totalPrice; }
     public ObjectProperty<Timestamp> orderDateProperty() { return orderDate; }
     public StringProperty statusProperty() { return status; }
+    public IntegerProperty carrierRatingProperty() { return carrierRating; }
+    public StringProperty carrierReviewProperty() { return carrierReview; }
 }

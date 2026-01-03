@@ -6,6 +6,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import java.util.Map;
 
+/**
+ * Controller that manages viewing and editing the current user's profile.
+ */
 public class ProfileController {
 
     @FXML private TextField usernameField; // Read-only
@@ -19,18 +22,23 @@ public class ProfileController {
     }
 
     private void loadUserData() {
-        if (UserSession.getInstance() != null) {
-            String username = UserSession.getInstance().getUsername();
-            usernameField.setText(username);
-            usernameField.setEditable(false); // Kullanıcı adı değiştirilemez
+        try {
+            if (UserSession.getInstance() != null && UserSession.getInstance().getUsername() != null) {
+                String username = UserSession.getInstance().getUsername();
+                usernameField.setText(username);
+                usernameField.setEditable(false); // Username is not editable
 
-            // Veritabanından diğer bilgileri çek
-            Map<String, String> details = UserDAO.getUserDetails(username);
-            if (details != null) {
-                emailField.setText(details.getOrDefault("email", ""));
-                addressField.setText(details.getOrDefault("address", ""));
-                phoneField.setText(details.getOrDefault("phone", ""));
+                // Veritabanından diğer bilgileri çek
+                Map<String, String> details = UserDAO.getUserDetails(username);
+                if (details != null) {
+                    emailField.setText(details.getOrDefault("email", ""));
+                    addressField.setText(details.getOrDefault("address", ""));
+                    phoneField.setText(details.getOrDefault("phone", ""));
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "Could not load user data: " + e.getMessage());
         }
     }
 
@@ -40,6 +48,11 @@ public class ProfileController {
         String email = emailField.getText();
         String address = addressField.getText();
         String phone = phoneField.getText();
+        // Basic email validation
+        if (email == null || !email.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+            showAlert(Alert.AlertType.ERROR, "Invalid Email", "Please enter a valid email address.");
+            return;
+        }
 
         if (UserDAO.updateUserProfile(username, email, address, phone)) {
             showAlert(Alert.AlertType.INFORMATION, "Success", "Profile updated successfully!");

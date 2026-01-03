@@ -1,0 +1,7 @@
+module:project
+main
+main.controllers
+main.dao
+main.factories
+main.models
+main.utils

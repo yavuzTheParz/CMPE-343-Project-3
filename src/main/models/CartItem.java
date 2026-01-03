@@ -31,7 +31,7 @@ public class CartItem {
     }
 
     public StringProperty productNameProperty() {
-        // HATA BURADAYDI: Product sınıfında property yok, biz oluşturup veriyoruz.
+        // Create a StringProperty from the product name (Product model lacks a property API)
         return new SimpleStringProperty(product.getName());
     }
 

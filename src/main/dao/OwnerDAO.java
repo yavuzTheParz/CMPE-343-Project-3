@@ -90,4 +90,15 @@ public class OwnerDAO {
             stmt.executeUpdate();
         } catch (SQLException e) { e.printStackTrace(); }
     }
+
+    public static String getSetting(String key) {
+        String query = "SELECT setting_value FROM system_settings WHERE setting_key = ?";
+        try (Connection conn = DatabaseAdapter.getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, key);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) return rs.getString(1);
+            }
+        } catch (SQLException e) { e.printStackTrace(); }
+        return null;
+    }
 }

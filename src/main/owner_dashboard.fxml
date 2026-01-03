@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.chart.*?>
+<?import java.lang.String?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml" 
+            fx:controller="main.controllers.OwnerController"
+            prefWidth="1000" prefHeight="700">
+
+
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="15">
+            <styleClass>
+                <String fx:value="header" />
+                <String fx:value="header-pad" />
+            </styleClass>
+
+            <Label text="OWNER PANEL (BOSS) 👔">
+                <styleClass>
+                    <String fx:value="title-label" />
+                </styleClass>
+            </Label>
+            <Region HBox.hgrow="ALWAYS" />
+            <Button text="Logout" onAction="#handleLogout">
+                <styleClass>
+                    <String fx:value="danger-button" />
+                </styleClass>
+            </Button>
+        </HBox>
+    </top>
+
+    <center>
+        <TabPane tabClosingPolicy="UNAVAILABLE">
+            
+            <Tab text="Products (Greedy Mode) 💰">
+                <VBox spacing="10">
+                    <styleClass>
+                        <String fx:value="header-pad" />
+                    </styleClass>
+                    <TableView fx:id="productTable" VBox.vgrow="ALWAYS">
+                        <styleClass>
+                            <String fx:value="table-view" />
+                        </styleClass>
+                        <columns>
+                            <TableColumn fx:id="colName" text="Name" prefWidth="150"/>
+                            <TableColumn fx:id="colCategory" text="Category" prefWidth="100"/>
+                            <TableColumn fx:id="colPrice" text="Base Price" prefWidth="100"/>
+                            <TableColumn fx:id="colStock" text="Stock" prefWidth="100"/>
+                            <TableColumn fx:id="colThreshold" text="Threshold (Double Price)" prefWidth="150"/>
+                        </columns>
+                        <columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
+                    </TableView>
+                    <Separator/>
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <TextField fx:id="nameField" promptText="Name" prefWidth="100">
+                            <styleClass>
+                                <String fx:value="input-field" />
+                            </styleClass>
+                        </TextField>
+                        <ComboBox fx:id="categoryBox" prefWidth="100">
+                            <styleClass>
+                                <String fx:value="combo-box" />
+                            </styleClass>
+                        </ComboBox>
+                        <TextField fx:id="priceField" promptText="Price" prefWidth="80">
+                            <styleClass>
+                                <String fx:value="input-field" />
+                            </styleClass>
+                        </TextField>
+                        <TextField fx:id="stockField" promptText="Stock" prefWidth="80">
+                            <styleClass>
+                                <String fx:value="input-field" />
+                            </styleClass>
+                        </TextField>
+                        <TextField fx:id="thresholdField" promptText="Threshold" prefWidth="80">
+                            <styleClass>
+                                <String fx:value="input-field" />
+                            </styleClass>
+                        </TextField>
+                        <Button text="Add" onAction="#handleAddProduct">
+                            <styleClass>
+                                <String fx:value="primary-button" />
+                            </styleClass>
+                        </Button>
+                        <VBox>
+                            <Button text="Select Image 📷" onAction="#handleSelectImage">
+                                <styleClass>
+                                    <String fx:value="nav-button" />
+                                </styleClass>
+                            </Button>
+                            <Label fx:id="imagePathLabel" text="No image selected">
+                                <styleClass>
+                                    <String fx:value="muted-label" />
+                                </styleClass>
+                            </Label>
+                        </VBox>
+                        <Button text="Update" onAction="#handleUpdateProduct">
+                            <styleClass>
+                                <String fx:value="nav-button" />
+                            </styleClass>
+                        </Button>
+                        <Button text="Delete" onAction="#handleDeleteProduct">
+                            <styleClass>
+                                <String fx:value="danger-button" />
+                            </styleClass>
+                        </Button>
+                    </HBox>
+                </VBox>
+            </Tab>
+
+            <Tab text="Carriers 🛵">
+                <HBox spacing="20">
+                    <styleClass>
+                        <String fx:value="header-pad" />
+                    </styleClass>
+                    <VBox spacing="10">
+                        <Label text="Carrier List">
+                            <styleClass>
+                                <String fx:value="title-label" />
+                            </styleClass>
+                        </Label>
+                        <ListView fx:id="carrierList" prefHeight="400"/>
+                        <Button text="Fire Selected 🔥" onAction="#handleFireCarrier" maxWidth="Infinity">
+                            <styleClass>
+                                <String fx:value="danger-button" />
+                            </styleClass>
+                        </Button>
+                        <Button text="Show Ratings ⭐" onAction="#handleShowRatings" maxWidth="Infinity">
+                            <styleClass>
+                                <String fx:value="nav-button" />
+                            </styleClass>
+                        </Button>
+                    </VBox>
+                    <VBox spacing="10">
+                        <styleClass>
+                            <String fx:value="card" />
+                        </styleClass>
+                        <Label text="Employ New Carrier">
+                            <styleClass>
+                                <String fx:value="title-label" />
+                            </styleClass>
+                        </Label>
+                        <TextField fx:id="newCarrierName" promptText="Username">
+                            <styleClass>
+                                <String fx:value="input-field" />
+                            </styleClass>
+                        </TextField>
+                        <TextField fx:id="newCarrierPass" promptText="Password">
+                            <styleClass>
+                                <String fx:value="input-field" />
+                            </styleClass>
+                        </TextField>
+                        <Button text="Hire Carrier 🤝" onAction="#handleHireCarrier">
+                            <styleClass>
+                                <String fx:value="primary-button" />
+                            </styleClass>
+                        </Button>
+                    </VBox>
+                </HBox>
+            </Tab>
+
+            <Tab text="Reports &amp; Analytics 📊">
+                <VBox>
+                    <styleClass>
+                        <String fx:value="header-pad" />
+                    </styleClass>
+                    <BarChart fx:id="salesChart" title="Product Sales Overview">
+                        <xAxis><CategoryAxis label="Product" fx:id="xAxis"/></xAxis>
+                        <yAxis><NumberAxis label="Sold (kg)" fx:id="yAxis"/></yAxis>
+                    </BarChart>
+                </VBox>
+            </Tab>
+
+            <Tab text="Messages &amp; Settings ⚙️">
+                <HBox spacing="20">
+                    <styleClass>
+                        <String fx:value="header-pad" />
+                    </styleClass>
+                    <VBox spacing="10" HBox.hgrow="ALWAYS">
+                        <Label text="Customer Messages">
+                            <styleClass>
+                                <String fx:value="title-label" />
+                            </styleClass>
+                        </Label>
+                        <ListView fx:id="messageList" VBox.vgrow="ALWAYS"/>
+                        <HBox spacing="10">
+                            <Button text="Open Thread" onAction="#handleOpenThread">
+                                <styleClass>
+                                    <String fx:value="primary-button" />
+                                </styleClass>
+                            </Button>
+                            <Button text="Mark Read" onAction="#handleMarkRead">
+                                <styleClass>
+                                    <String fx:value="nav-button" />
+                                </styleClass>
+                            </Button>
+                        </HBox>
+                        <TextArea fx:id="replyField" promptText="Type reply here..." prefRowCount="3"/>
+                        <Button text="Send Reply ✉️" onAction="#handleReply">
+                            <styleClass>
+                                <String fx:value="nav-button" />
+                            </styleClass>
+                        </Button>
+                    </VBox>
+                    <Separator orientation="VERTICAL"/>
+                    <VBox spacing="10" minWidth="200">
+                        <Label text="System Settings">
+                            <styleClass>
+                                <String fx:value="title-label" />
+                            </styleClass>
+                        </Label>
+                        <Label text="Loyalty Discount (%):"/>
+                        <TextField fx:id="loyaltyField" promptText="10">
+                            <styleClass>
+                                <String fx:value="input-field" />
+                            </styleClass>
+                        </TextField>
+                        <Button text="Update Settings" onAction="#handleUpdateSettings">
+                            <styleClass>
+                                <String fx:value="nav-button" />
+                            </styleClass>
+                        </Button>
+                        <Button text="Manage Coupons" onAction="#handleManageCoupons">
+                            <styleClass>
+                                <String fx:value="nav-button" />
+                            </styleClass>
+                        </Button>
+                        <Button text="Create Coupon" onAction="#handleCreateCoupon">
+                            <styleClass>
+                                <String fx:value="nav-button" />
+                            </styleClass>
+                        </Button>
+                        <Separator/>
+                        <Label text="All Orders Log:">
+                            <styleClass>
+                                <String fx:value="title-label" />
+                            </styleClass>
+                        </Label>
+                        <ListView fx:id="allOrdersList" VBox.vgrow="ALWAYS"/>
+                    </VBox>
+                </HBox>
+            </Tab>
+
+        </TabPane>
+    </center>
+
+</BorderPane>

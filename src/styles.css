@@ -1,0 +1,94 @@
+/* Global app theme - modern, subtle greens and clean UI */
+
+.root {
+    -fx-font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    -fx-font-size: 13px;
+    -fx-background-color: linear-gradient(#ffffff, #f7fbf7);
+}
+
+/* Top bars and headings */
+.hbox, .top-bar {
+    -fx-padding: 12 16 12 16;
+}
+
+.label {
+    -fx-text-fill: #2c3e50;
+}
+
+.header-label {
+    -fx-font-size: 18px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #1b4f2b;
+}
+
+/* Buttons */
+.button {
+    -fx-background-radius: 6;
+    -fx-padding: 8 14 8 14;
+}
+
+.button:hover {
+    -fx-effect: dropshadow( gaussian , rgba(0,0,0,0.12) , 6, 0.0 , 0 , 2 );
+}
+
+/* Primary action */
+.primary-button {
+    -fx-background-color: #27ae60;
+    -fx-text-fill: white;
+    -fx-font-weight: 600;
+}
+
+.secondary-button {
+    -fx-background-color: #2980b9;
+    -fx-text-fill: white;
+}
+
+.warn-button {
+    -fx-background-color: #c0392b;
+    -fx-text-fill: white;
+}
+
+/* Tables */
+.table-view {
+    -fx-background-color: white;
+    -fx-border-color: transparent;
+    -fx-table-cell-border-color: transparent;
+}
+
+.table-view .column-header-background {
+    -fx-background-color: linear-gradient(#f0f6f0, #e9f3ea);
+}
+
+.table-view .column-header, .table-view .column-header .label {
+    -fx-text-fill: #145a32;
+    -fx-font-weight: 600;
+}
+
+.table-row-cell:filled:selected, .table-row-cell:filled:selected:focused {
+    -fx-background-color: rgba(39,174,96,0.08);
+}
+
+/* Text fields and combo boxes */
+.text-field, .combo-box, .choice-box {
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+    -fx-border-color: #d7e9d7;
+    -fx-padding: 6 8 6 8;
+}
+
+/* Dialog content */
+.dialog-pane {
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+
+/* Make images in table centered */
+.table-cell > .image-view {
+    -fx-alignment: center;
+}
+
+/* Small utility */
+.title-small {
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+}

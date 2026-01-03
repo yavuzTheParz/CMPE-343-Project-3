@@ -2,6 +2,9 @@ package main.models;
 
 import javafx.scene.image.Image;
 
+/**
+ * Simple domain model representing a product with price, stock and image.
+ */
 public class Product {
     private int id;
     private String name;
@@ -20,11 +23,10 @@ public class Product {
         this.threshold = threshold;
     }
 
-    // --- EKSİK OLAN SETTER ---
+    // Setter for stock (also used to store cart quantity in some places)
     public void setStock(double stock) {
         this.stock = stock;
     }
-    // -------------------------
 
     public Image getImage() { return image; }
     public void setImage(Image image) { this.image = image; }

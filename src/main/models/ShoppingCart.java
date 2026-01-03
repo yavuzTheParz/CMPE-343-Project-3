@@ -3,21 +3,25 @@ package main.models;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+/**
+ * In-memory shopping cart used during a user's session. Holds products and
+ * provides helper methods for total calculation and item management.
+ */
 public class ShoppingCart {
-    // Sepet listesi (Statik, yani her yerden erişilebilir)
+    // Cart list (static - accessible application-wide)
     private static final ObservableList<Product> items = FXCollections.observableArrayList();
 
     public static ObservableList<Product> getItems() {
         return items;
     }
 
-    // --- DÜZELTİLEN KISIM: MERGING (BİRLEŞTİRME) ---
+    // Merge behavior: if the same product is already in the cart, increment quantity
     public static void addItem(Product product, double quantity) {
-        // 1. Sepette bu ürün zaten var mı?
+        if (quantity <= 0) throw new IllegalArgumentException("Quantity must be positive");
+        // 1. Check if the product already exists in the cart
         for (Product p : items) {
             if (p.getName().equals(product.getName())) {
-                // Varsa: Sadece stok miktarını (bizim için sepetteki miktar) arttır
-                // Not: Product sınıfındaki 'stock' alanını geçici olarak sepet miktarı gibi kullanıyoruz.
+                // If present: increase the stored quantity (we reuse Product.stock as cart qty)
                 double currentQty = p.getStock(); 
                 p.setStock(currentQty + quantity); 
                 
@@ -28,14 +32,13 @@ public class ShoppingCart {
             }
         }
 
-        // 2. Yoksa: Yeni ürün oluştur ve ekle
-        // (Orijinal nesneyi bozmamak için kopyasını oluşturuyoruz)
-        // DİKKAT: Ürün fiyatı 'getEffectivePrice' ile gelmeli (Açgözlü Patron Modu)
+        // 2. If not present: create a new cart item (copy) and add it
+        // Note: use getEffectivePrice() to reflect current effective price
         Product newItem = new main.models.Product(
                 product.getId(),
                 product.getName(),
                 product.getCategory(),
-                product.getEffectivePrice(), // Zamlı fiyatı al!
+                product.getEffectivePrice(), // use effective price (may reflect threshold adjustments)
                 quantity,                    // Miktar olarak girilen değeri stock hanesine yazıyoruz
                 product.getThreshold()
         );

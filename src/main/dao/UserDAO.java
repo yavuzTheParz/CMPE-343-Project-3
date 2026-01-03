@@ -8,9 +8,21 @@ import java.util.HashMap;
 import java.util.Map;
 import main.DatabaseAdapter;
 
+/**
+ * User data access methods: registration, lookup and profile updates.
+ */
 public class UserDAO {
 
-    // 1. KAYIT OL
+    /**
+     * Register a new user with the given role. Passwords are stored using
+     * SHA-256 via MySQL's SHA2 function in SQL.
+     *
+     * @param username the desired username
+     * @param password plaintext password (will be hashed in DB)
+     * @param email email address
+     * @param role user role (e.g., customer, carrier, owner)
+     * @return true if created successfully
+     */
     public static boolean registerUser(String username, String password, String email, String role) {
         String query = "INSERT INTO users (username, password, email, role) VALUES (?, SHA2(?, 256), ?, ?)";
         try (Connection conn = DatabaseAdapter.getConnection();
@@ -27,20 +39,19 @@ public class UserDAO {
         }
     }
 
-    // 2. KULLANICI ADI KONTROLÜ (DÜZELTİLDİ) ✅
+    // 2. Username existence check (fixed)
     public static boolean isUsernameTaken(String username) {
-        // ESKİSİ: "SELECT id FROM..." (Hata veriyordu)
-        // YENİSİ: "SELECT username FROM..." (Garanti çalışır)
+        // Previously used SELECT id FROM... which caused issues; now use username
         String query = "SELECT username FROM users WHERE username = ?";
         
         try (Connection conn = DatabaseAdapter.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, username);
             ResultSet rs = stmt.executeQuery();
-            return rs.next(); // Eğer kayıt gelirse, kullanıcı adı alınmış demektir.
+            return rs.next(); // If a record is returned the username is taken.
         } catch (SQLException e) {
             e.printStackTrace();
-            return true; // Hata olursa, risk almayıp 'alınmış' varsayıyoruz.
+            return true; // On error, assume taken to be conservative.
         }
     }
 

@@ -34,7 +34,7 @@ public class LoginController {
             if (role.equals("owner")) {
                 changeScene("/owner_dashboard.fxml", "Owner Dashboard");
             } else if (role.equals("customer")) {
-                changeScene("/customer_dashboard.fxml", "GroupXX GreenGrocer");
+                changeScene("/customer_dashboard.fxml", "Group28 GreenGrocer");
             } else if (role.equals("carrier")) {
                 changeScene("/carrier_dashboard.fxml", "Carrier Dashboard");
             }
@@ -54,20 +54,28 @@ public class LoginController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent root = loader.load();
             Stage stage = (Stage) usernameField.getScene().getWindow();
+            // Normalize inline FXML styles so stylesheet rules apply
+            main.controllers.BaseController.normalizeStyles(root);
             Scene scene = new Scene(root);
-            
-            // CSS varsa yükle
-            if (getClass().getResource("/styles.css") != null) {
-                scene.getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
+
+            if (getClass().getResource("/green-grocer-theme.css") != null) {
+                scene.getStylesheets().add(getClass().getResource("/green-grocer-theme.css").toExternalForm());
             }
 
             stage.setScene(scene);
-            stage.setTitle(title);
+            stage.setTitle("Group28 GreenGrocer - " + title);
+            stage.setWidth(960);
+            stage.setHeight(540);
             stage.centerOnScreen();
             stage.show();
         } catch (IOException e) {
+            System.err.println("Error loading FXML: " + fxmlPath);
             e.printStackTrace();
-            showAlert("Error", "Could not load page: " + fxmlPath);
+            showAlert("Error", "Could not load page: " + fxmlPath + "\nError: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("Unexpected error loading scene: " + fxmlPath);
+            e.printStackTrace();
+            showAlert("Error", "Unexpected error: " + e.getMessage());
         }
     }
 

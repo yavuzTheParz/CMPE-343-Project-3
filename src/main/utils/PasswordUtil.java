@@ -1,13 +1,16 @@
-package main.utils; // Klasör yapınıza göre paket ismi
+package main.utils;
 
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class PasswordUtil { // Sınıf adı dosya adıyla AYNI olmalı
+/**
+ * Utility for hashing and verifying passwords using SHA-256.
+ */
+public class PasswordUtil {
 
-    // Şifreyi SHA-256 ile hashler
+    /** Hash a password with SHA-256 and return hex string. */
     public static String hashPassword(String password) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -22,8 +25,7 @@ public class PasswordUtil { // Sınıf adı dosya adıyla AYNI olmalı
             throw new RuntimeException(e);
         }
     }
-
-    // Girilen şifre ile veritabanındaki hash'i karşılaştırır
+    /** Compare the provided plaintext password with the stored hash. */
     public static boolean checkPassword(String plainPassword, String storedHash) {
         String newHash = hashPassword(plainPassword);
         return newHash.equals(storedHash);

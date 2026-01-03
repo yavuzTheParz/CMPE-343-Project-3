@@ -6,21 +6,23 @@
 
 <BorderPane xmlns:fx="http://javafx.com/fxml" 
             fx:controller="main.controllers.AnalyticsController"
-            prefWidth="600" prefHeight="500">
+            prefWidth="650" prefHeight="550" style="-fx-background-color: linear-gradient(to bottom right, #FCE7F3 0%, #FBCFE8 50%, #F9A8D4 100%);">
 
     <top>
-        <VBox alignment="CENTER" style="-fx-background-color: #8e44ad; -fx-padding: 15;">
-            <Label text="Sales Analytics" style="-fx-text-fill: white; -fx-font-weight: bold; -fx-font-size: 18px;"/>
+        <VBox alignment="CENTER" style="-fx-background-color: linear-gradient(to right, #a8edea 0%, #fed6e3 50%, #fbc2eb 100%); -fx-padding: 25; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 30, 0, 0, 10);">
+            <Label text="📊 SALES ANALYTICS" style="-fx-text-fill: white; -fx-font-weight: 900; -fx-font-size: 26px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 10, 0, 0, 3);"/>
         </VBox>
     </top>
 
     <center>
-        <PieChart fx:id="salesPieChart" legendSide="BOTTOM" title="Total Sales by Product (kg)"/>
+        <VBox style="-fx-padding: 20; -fx-background-color: white; -fx-background-radius: 18; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 16, 0, 0, 4); -fx-margin: 20;">
+            <PieChart fx:id="salesPieChart" legendSide="BOTTOM" title="Total Sales by Product (kg)" style="-fx-padding: 10;"/>
+        </VBox>
     </center>
 
     <bottom>
-        <HBox alignment="CENTER" style="-fx-padding: 10;">
-            <Button text="Close" onAction="#handleClose" style="-fx-background-color: #c0392b; -fx-text-fill: white;"/>
+        <HBox alignment="CENTER" style="-fx-padding: 15; -fx-background-color: #F7FAF8;">
+            <Button text="Close" onAction="#handleClose" style="-fx-background-color: #c0392b; -fx-text-fill: white; -fx-padding: 12 24; -fx-background-radius: 10; -fx-cursor: hand;"/>
         </HBox>
     </bottom>
 

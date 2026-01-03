@@ -10,16 +10,34 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class RegisterController {
-
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
     @FXML private TextField emailField;
 
+    /**
+     * Initialize UI hints for the register form.
+     */
     @FXML
     public void initialize() {
-        // Gerekirse başlangıç ayarları
+        // Inline UI hints: prompt and tooltip for password strength guidance
+        if (passwordField != null) {
+            passwordField.setPromptText("Min 8 chars, upper+lower+digit+special");
+            Tooltip t = new Tooltip("Password requirements:\n- At least 8 characters\n- Uppercase and lowercase letters\n- At least one digit\n- At least one special character\n- Must not contain the username");
+            t.setWrapText(true);
+            passwordField.setTooltip(t);
+        }
+        if (usernameField != null) {
+            usernameField.setPromptText("Choose a unique username");
+        }
+        if (emailField != null) {
+            emailField.setPromptText("you@example.com");
+        }
     }
 
+    /**
+     * Handle registration action from the UI. Validates input and calls
+     * {@link main.dao.UserDAO#registerUser} when checks pass.
+     */
     @FXML
     private void handleRegister() {
         String username = usernameField.getText().trim();
@@ -32,13 +50,19 @@ public class RegisterController {
             return;
         }
 
-        // 2. Şifre Uzunluk Kontrolü
-        if (password.length() < 8) {
-            showAlert("Weak Password", "Password must be at least 8 characters long.");
+        // 2. Email basic check
+        if (!email.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {
+            showAlert("Invalid Email", "Please enter a valid email address.");
             return;
         }
 
-        // 3. Kullanıcı Adı Kontrolü
+        // 3. Strong password policy
+        if (!isStrongPassword(password, username)) {
+            showAlert("Weak Password", "Password must be at least 8 characters, include uppercase, lowercase, digits and special characters, and must not contain the username.");
+            return;
+        }
+
+        // 4. Username check
         if (UserDAO.isUsernameTaken(username)) {
             showAlert("Username Taken", "This username is already in use.");
             return;
@@ -55,25 +79,45 @@ public class RegisterController {
         }
     }
 
+    private boolean isStrongPassword(String password, String username) {
+        if (password == null) return false;
+        if (password.length() < 8) return false;
+        if (username != null && !username.isEmpty() && password.toLowerCase().contains(username.toLowerCase())) return false;
+        boolean hasUpper = password.chars().anyMatch(Character::isUpperCase);
+        boolean hasLower = password.chars().anyMatch(Character::isLowerCase);
+        boolean hasDigit = password.chars().anyMatch(Character::isDigit);
+        boolean hasSpecial = password.chars().anyMatch(c -> "!@#$%^&*()_+[]{}|;:'\",.<>/?`~-=".indexOf(c) >= 0);
+        return hasUpper && hasLower && hasDigit && hasSpecial;
+    }
+
+    // --- HANDLE BACK TO LOGIN ---
+    @FXML
+    private void handleBackToLogin() {
+        returnToLogin();
+    }
+
     // --- YENİ METOD: LOGİN EKRANINI AÇ ---
     private void returnToLogin() {
         try {
-            // 1. Şu anki kayıt penceresini kapat
+            // 1. Close the current registration window
             Stage currentStage = (Stage) usernameField.getScene().getWindow();
             currentStage.close();
 
             // 2. Login ekranını yükle ve aç
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/login.fxml"));
             Parent root = loader.load();
+            // Normalize inline FXML styles into CSS classes
+            main.controllers.BaseController.normalizeStyles(root);
             Stage loginStage = new Stage();
             loginStage.setTitle("GreenGrocer Login");
-            loginStage.setScene(new Scene(root));
-            
-            // CSS Yükle (Görünüm bozulmasın)
-            if (getClass().getResource("/styles.css") != null) {
-                loginStage.getScene().getStylesheets().add(getClass().getResource("/styles.css").toExternalForm());
+            Scene scene = new Scene(root);
+            if (getClass().getResource("/green-grocer-theme.css") != null) {
+                scene.getStylesheets().add(getClass().getResource("/green-grocer-theme.css").toExternalForm());
             }
-
+            loginStage.setScene(scene);
+            loginStage.setWidth(960);
+            loginStage.setHeight(540);
+            loginStage.centerOnScreen();
             loginStage.show();
 
         } catch (IOException e) {
@@ -91,6 +135,11 @@ public class RegisterController {
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
+        
+        // Ensure the dialog is wide enough for long messages
+        alert.getDialogPane().setMinWidth(500);
+        alert.getDialogPane().setPrefWidth(500);
+        
         alert.showAndWait();
     }
 }

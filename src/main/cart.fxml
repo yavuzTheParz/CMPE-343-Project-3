@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.String?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" 
+      fx:controller="main.controllers.CartController"
+      spacing="15">
+
+
+
+    <styleClass>
+        <String fx:value="header-pad" />
+    </styleClass>
+
+    <Label text="My Shopping Cart 🛒">
+        <styleClass>
+            <String fx:value="title-label" />
+        </styleClass>
+    </Label>
+
+    <TableView fx:id="cartTable" VBox.vgrow="ALWAYS" prefHeight="250">
+        <styleClass>
+            <String fx:value="table-view" />
+        </styleClass>
+        <columns>
+            <TableColumn fx:id="colName" text="Product Name" prefWidth="150"/>
+            <TableColumn fx:id="colQuantity" text="Quantity (kg)" prefWidth="100"/>
+            <TableColumn fx:id="colPrice" text="Price (TL)" prefWidth="100"/>
+        </columns>
+        <columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
+    </TableView>
+
+    <Separator />
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="📅 Delivery Date:">
+            <styleClass>
+                <String fx:value="muted-label" />
+            </styleClass>
+        </Label>
+        <DatePicker fx:id="deliveryDatePicker" prefWidth="120"/>
+        <ComboBox fx:id="deliveryTimeBox" prefWidth="100"/>
+    </HBox>
+
+    <Separator />
+
+    <VBox spacing="5" alignment="CENTER_RIGHT">
+        <Label fx:id="discountLabel" text="Discount: 0.0 TL">
+            <styleClass>
+                <String fx:value="muted-label" />
+            </styleClass>
+        </Label>
+        <Label fx:id="totalLabel" text="Total: 0.0 TL">
+            <styleClass>
+                <String fx:value="title-label" />
+            </styleClass>
+        </Label>
+    </VBox>
+
+    <HBox spacing="15" alignment="CENTER">
+        <Button text="Remove Item" onAction="#handleRemove">
+            <styleClass>
+                <String fx:value="danger-button" />
+            </styleClass>
+        </Button>
+        <Button text="Checkout &amp; Pay" onAction="#handleCheckout">
+            <styleClass>
+                <String fx:value="primary-button" />
+            </styleClass>
+        </Button>
+    </HBox>
+
+</VBox>

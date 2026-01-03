@@ -1,0 +1,512 @@
+/* green-grocer-theme.css - VIBRANT COLORFUL DESIGN */
+
+/* ---------- Global ---------- */
+.root
+{
+    -fx-font-family: "Segoe UI", "Inter", "Roboto", "Arial";
+    -fx-background-color: #F0F9FF;
+}
+
+/* ---------- Colorful Glass Cards ---------- */
+.glass-card
+{
+    -fx-background-color: linear-gradient(to bottom, rgba(255, 255, 255, 0.75) 0%, rgba(232, 245, 255, 0.75) 100%);
+    -fx-background-radius: 24;
+    -fx-effect: dropshadow(gaussian, rgba(59, 130, 246, 0.25), 30, 0, 0, 10);
+    -fx-border-color: rgba(147, 197, 253, 0.5);
+    -fx-border-width: 2;
+    -fx-border-radius: 24;
+}
+
+.glass-card:hover
+{
+    -fx-effect: dropshadow(gaussian, rgba(59, 130, 246, 0.4), 35, 0, 0, 12);
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+.glass-card-dark
+{
+    -fx-background-color: linear-gradient(to bottom, rgba(30, 58, 138, 0.95) 0%, rgba(30, 64, 175, 0.95) 100%);
+    -fx-background-radius: 24;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 30, 0, 0, 12);
+    -fx-border-color: rgba(147, 197, 253, 0.3);
+    -fx-border-width: 2;
+    -fx-border-radius: 24;
+}
+
+/* ---------- Vibrant Header ---------- */
+.header
+{
+    -fx-background-color: linear-gradient(to right, #10B981 0%, #14B8A6 50%, #06B6D4 100%);
+    -fx-effect: dropshadow(gaussian, rgba(16, 185, 129, 0.5), 30, 0, 0, 10);
+}
+
+.header-pad
+{
+    -fx-padding: 18 25 18 25;
+}
+
+/* ---------- Colorful Buttons ---------- */
+.button
+{
+    -fx-background-color: linear-gradient(to bottom, #60A5FA 0%, #3B82F6 100%);
+    -fx-background-radius: 16;
+    -fx-padding: 12 24 12 24;
+    -fx-font-weight: 700;
+    -fx-font-size: 14px;
+    -fx-text-fill: white;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(59, 130, 246, 0.4), 15, 0, 0, 5);
+}
+
+.button:hover
+{
+    -fx-background-color: linear-gradient(to bottom, #3B82F6 0%, #2563EB 100%);
+    -fx-cursor: hand;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-effect: dropshadow(gaussian, rgba(59, 130, 246, 0.6), 20, 0, 0, 8);
+}
+
+.button:pressed
+{
+    -fx-background-color: #1D4ED8;
+    -fx-scale-x: 0.95;
+    -fx-scale-y: 0.95;
+}
+
+/* Add button - Vibrant Green */
+.add-button
+{
+    -fx-background-color: linear-gradient(to bottom, #34D399 0%, #10B981 100%);
+    -fx-background-radius: 20;
+    -fx-text-fill: white;
+    -fx-font-weight: 800;
+    -fx-font-size: 15px;
+    -fx-padding: 12 24 12 24;
+    -fx-effect: dropshadow(gaussian, rgba(16, 185, 129, 0.5), 20, 0, 0, 6);
+}
+
+.add-button:hover
+{
+    -fx-background-color: linear-gradient(to bottom, #10B981 0%, #059669 100%);
+    -fx-effect: dropshadow(gaussian, rgba(16, 185, 129, 0.7), 25, 0, 0, 10);
+    -fx-scale-x: 1.08;
+    -fx-scale-y: 1.08;
+}
+
+/* Nav buttons - Glass with white text */
+.nav-button
+{
+    -fx-background-color: rgba(255,255,255,0.25);
+    -fx-text-fill: #1E293B;
+    -fx-background-radius: 12;
+    -fx-padding: 8 16 8 16;
+    -fx-border-color: rgba(255,255,255,0.4);
+    -fx-border-width: 1.5;
+    -fx-border-radius: 12;
+    -fx-font-weight: 700;
+    -fx-font-size: 12px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 10, 0, 0, 3);
+}
+
+.nav-button:hover
+{
+    -fx-background-color: rgba(255,255,255,0.35);
+    -fx-text-fill: #0F172A;
+    -fx-border-color: rgba(255,255,255,0.6);
+    -fx-effect: dropshadow(gaussian, rgba(255,255,255,0.3), 15, 0, 0, 5);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+/* Danger button - Hot Pink/Red */
+.danger-button
+{
+    -fx-background-color: linear-gradient(to bottom, #FB7185 0%, #F43F5E 100%);
+    -fx-text-fill: white;
+    -fx-background-radius: 16;
+    -fx-font-weight: 700;
+    -fx-effect: dropshadow(gaussian, rgba(244, 63, 94, 0.5), 20, 0, 0, 6);
+}
+
+.danger-button:hover
+{
+    -fx-background-color: linear-gradient(to bottom, #F43F5E 0%, #E11D48 100%);
+    -fx-effect: dropshadow(gaussian, rgba(244, 63, 94, 0.7), 25, 0, 0, 10);
+    -fx-scale-x: 1.08;
+    -fx-scale-y: 1.08;
+}
+
+/* Primary button - Purple/Blue gradient */
+.primary-button
+{
+    -fx-background-color: linear-gradient(to right, #8B5CF6 0%, #6366F1 50%, #3B82F6 100%);
+    -fx-text-fill: white;
+    -fx-font-weight: 800;
+    -fx-font-size: 16px;
+    -fx-background-radius: 16;
+    -fx-padding: 16 32 16 32;
+    -fx-effect: dropshadow(gaussian, rgba(139, 92, 246, 0.6), 25, 0, 0, 8);
+    -fx-border-color: rgba(255,255,255,0.4);
+    -fx-border-width: 2;
+    -fx-border-radius: 16;
+}
+
+.primary-button:hover
+{
+    -fx-background-color: linear-gradient(to right, #7C3AED 0%, #4F46E5 50%, #2563EB 100%);
+    -fx-effect: dropshadow(gaussian, rgba(139, 92, 246, 0.8), 30, 0, 0, 12);
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+.primary-button:pressed
+{
+    -fx-background-color: #6D28D9;
+    -fx-scale-x: 0.95;
+    -fx-scale-y: 0.95;
+}
+
+/* ---------- Colorful Search & ComboBox ---------- */
+.search-field,
+.combo-box
+{
+    -fx-background-radius: 16;
+    -fx-border-radius: 16;
+    -fx-border-color: #A5F3FC;
+    -fx-border-width: 2;
+    -fx-background-color: linear-gradient(to bottom, #FFFFFF 0%, #F0FDFA 100%);
+    -fx-padding: 12 18 12 18;
+    -fx-font-size: 14px;
+    -fx-effect: dropshadow(gaussian, rgba(6, 182, 212, 0.2), 10, 0, 0, 3);
+}
+
+.search-field:focused,
+.combo-box:focused
+{
+    -fx-border-color: #06B6D4;
+    -fx-border-width: 3;
+    -fx-effect: dropshadow(gaussian, rgba(6, 182, 212, 0.5), 20, 0, 0, 6);
+}
+
+.combo-box .arrow-button
+{
+    -fx-background-color: transparent;
+}
+
+.combo-box:hover
+{
+    -fx-border-color: #22D3EE;
+    -fx-effect: dropshadow(gaussian, rgba(6, 182, 212, 0.3), 15, 0, 0, 5);
+}
+
+/* ---------- Vibrant Cards ---------- */
+.card
+{
+    -fx-background-color: linear-gradient(to bottom right, #FFFFFF 0%, #FEF3C7 100%);
+    -fx-background-radius: 24;
+    -fx-padding: 25;
+    -fx-effect: dropshadow(gaussian, rgba(251, 191, 36, 0.3), 25, 0, 0, 10);
+    -fx-border-color: rgba(252, 211, 77, 0.5);
+    -fx-border-width: 2;
+    -fx-border-radius: 24;
+}
+
+.card:hover
+{
+    -fx-effect: dropshadow(gaussian, rgba(251, 191, 36, 0.5), 30, 0, 0, 12);
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+/* ---------- Colorful TableView ---------- */
+.table-view
+{
+    -fx-background-color: linear-gradient(to bottom, #FFFFFF 0%, #FDF4FF 100%);
+    -fx-background-radius: 20;
+    -fx-padding: 0;
+    -fx-effect: dropshadow(gaussian, rgba(168, 85, 247, 0.25), 25, 0, 0, 10);
+}
+
+/* Modern table with colorful cards */
+.modern-table
+{
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-border-width: 0;
+    -fx-fixed-cell-size: 55;
+}
+
+.modern-table .column-header-background
+{
+    -fx-background-color: linear-gradient(to bottom, #DDD6FE 0%, #E9D5FF 100%);
+    -fx-background-radius: 20 20 0 0;
+    -fx-padding: 10 0 10 0;
+}
+
+.modern-table .column-header
+{
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+    -fx-padding: 10 5 10 5;
+}
+
+.modern-table .column-header .label
+{
+    -fx-text-fill: #6B21A8;
+    -fx-font-weight: 800;
+    -fx-font-size: 14px;
+    -fx-padding: 0 5 0 5;
+}
+
+.modern-table .table-row-cell
+{
+    -fx-background-color: rgba(255, 255, 255, 0.85);
+    -fx-background-radius: 0;
+    -fx-padding: 0;
+    -fx-border-width: 0;
+    -fx-border-color: transparent;
+    -fx-effect: none;
+    -fx-cell-size: 55;
+}
+
+.modern-table .table-row-cell:hover
+{
+    -fx-background-color: linear-gradient(to right, rgba(191, 219, 254, 0.9) 0%, rgba(147, 197, 253, 0.9) 100%);
+    -fx-effect: none;
+    -fx-cursor: hand;
+}
+
+.modern-table .table-row-cell:selected
+{
+    -fx-background-color: linear-gradient(to right, rgba(167, 139, 250, 0.95) 0%, rgba(139, 92, 246, 0.95) 100%);
+    -fx-effect: none;
+    -fx-border-width: 0;
+}
+
+.modern-table .table-row-cell:selected .label
+{
+    -fx-text-fill: white;
+}
+
+.modern-table .table-cell
+{
+    -fx-border-width: 0;
+    -fx-padding: 8;
+    -fx-alignment: CENTER_LEFT;
+    -fx-font-size: 14px;
+}
+
+/* Table header */
+.table-view .column-header-background
+{
+    -fx-background-color: linear-gradient(to bottom, #C7D2FE 0%, #DDD6FE 100%);
+    -fx-background-radius: 20 20 0 0;
+    -fx-effect: dropshadow(gaussian, rgba(99, 102, 241, 0.2), 15, 0, 0, 5);
+}
+
+.table-view .column-header,
+.table-view .filler
+{
+    -fx-background-color: transparent;
+    -fx-size: 45px;
+}
+
+.table-view .column-header .label
+{
+    -fx-text-fill: #4338CA;
+    -fx-font-weight: 800;
+    -fx-font-size: 14px;
+}
+
+/* Row styling: Clean modern */
+.table-row-cell:odd
+{
+    -fx-background-color: rgba(255, 255, 255, 0.85);
+}
+
+.table-row-cell:even
+{
+    -fx-background-color: rgba(248, 250, 252, 0.85);
+}
+
+/* Hover row */
+.table-row-cell:hover
+{
+    -fx-background-color: linear-gradient(to right, rgba(191, 219, 254, 0.9) 0%, rgba(147, 197, 253, 0.9) 100%);
+}
+
+/* Selected row */
+.table-row-cell:selected
+{
+    -fx-background-color: linear-gradient(to right, rgba(167, 139, 250, 0.95) 0%, rgba(139, 92, 246, 0.95) 100%);
+    -fx-text-fill: white;
+}
+
+.table-row-cell:selected .label
+{
+    -fx-text-fill: white;
+}
+
+/* Table cell padding */
+.table-cell
+{
+    -fx-padding: 12 12 12 12;
+    -fx-border-color: transparent;
+}
+
+.image-cell
+{
+    -fx-alignment: CENTER;
+}
+
+/* Colorful Scrollbar */
+.scroll-bar:vertical .thumb,
+.scroll-bar:horizontal .thumb
+{
+    -fx-background-color: linear-gradient(to bottom, #34D399 0%, #10B981 100%);
+    -fx-background-radius: 10;
+}
+
+.scroll-bar:vertical .track,
+.scroll-bar:horizontal .track
+{
+    -fx-background-color: rgba(209, 250, 229, 0.5);
+    -fx-background-radius: 10;
+}
+
+.scroll-bar:vertical .thumb:hover,
+.scroll-bar:horizontal .thumb:hover
+{
+    -fx-background-color: linear-gradient(to bottom, #10B981 0%, #059669 100%);
+}
+
+/* ---------- Vibrant Labels ---------- */
+.title-label
+{
+    -fx-text-fill: #1E3A8A;
+    -fx-font-size: 22px;
+    -fx-font-weight: 900;
+    -fx-effect: dropshadow(gaussian, rgba(59, 130, 246, 0.3), 8, 0, 0, 2);
+}
+
+.muted-label
+{
+    -fx-text-fill: rgba(100, 116, 139, 0.8);
+    -fx-font-size: 13px;
+}
+
+.rounded
+{
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+}
+
+/* ---------- Colorful Forms ---------- */
+.form-container
+{
+    -fx-background-color: linear-gradient(to bottom right, #FFFFFF 0%, #F0FDFA 100%);
+    -fx-background-radius: 24;
+    -fx-padding: 30;
+    -fx-effect: dropshadow(gaussian, rgba(6, 182, 212, 0.3), 25, 0, 0, 10);
+    -fx-border-color: rgba(165, 243, 252, 0.5);
+    -fx-border-width: 2;
+    -fx-border-radius: 24;
+}
+
+.input-field
+{
+    -fx-background-color: linear-gradient(to bottom, #FFFFFF 0%, #F0F9FF 100%);
+    -fx-background-radius: 14;
+    -fx-border-radius: 14;
+    -fx-border-color: #BAE6FD;
+    -fx-border-width: 2;
+    -fx-padding: 14 16 14 16;
+    -fx-font-size: 14px;
+    -fx-effect: dropshadow(gaussian, rgba(59, 130, 246, 0.15), 10, 0, 0, 3);
+}
+
+.input-field:focused
+{
+    -fx-border-color: #3B82F6;
+    -fx-border-width: 3;
+    -fx-effect: dropshadow(gaussian, rgba(59, 130, 246, 0.4), 20, 0, 0, 6);
+}
+
+.muted-link
+{
+    -fx-text-fill: #3B82F6;
+    -fx-font-weight: 700;
+}
+
+.muted-link:hover
+{
+    -fx-text-fill: #2563EB;
+    -fx-underline: true;
+}
+
+.header .label
+{
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 0, 2);
+}
+
+/* ---------- Vibrant ListView ---------- */
+.list-view
+{
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-padding: 10;
+}
+
+.list-view .list-cell
+{
+    -fx-background-color: linear-gradient(to right, #FFFFFF 0%, #F0FDFA 100%);
+    -fx-background-radius: 18;
+    -fx-padding: 20;
+    -fx-border-width: 0 0 12 0;
+    -fx-border-color: transparent;
+    -fx-effect: dropshadow(gaussian, rgba(6, 182, 212, 0.2), 18, 0, 0, 5);
+}
+
+.list-view .list-cell:hover
+{
+    -fx-background-color: linear-gradient(to right, #E0F2FE 0%, #BAE6FD 100%);
+    -fx-effect: dropshadow(gaussian, rgba(14, 165, 233, 0.4), 25, 0, 0, 8);
+    -fx-cursor: hand;
+    -fx-scale-x: 1.01;
+    -fx-scale-y: 1.01;
+}
+
+.list-view .list-cell:selected
+{
+    -fx-background-color: linear-gradient(to right, #60A5FA 0%, #3B82F6 100%);
+    -fx-effect: dropshadow(gaussian, rgba(59, 130, 246, 0.6), 30, 0, 0, 10);
+    -fx-border-color: #2563EB;
+    -fx-border-width: 0 0 0 5;
+}
+
+.list-view .list-cell:selected .label
+{
+    -fx-text-fill: white;
+}
+
+/* ---------- ScrollPane ---------- */
+.scroll-pane
+{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-pane .viewport
+{
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .corner
+{
+    -fx-background-color: transparent;
+}

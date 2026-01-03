@@ -1,7 +1,10 @@
 package main.utils;
 
+/**
+ * Simple session holder for the current username during application runtime.
+ */
 public class SessionManager {
-    // Uygulama boyunca giriş yapan kullanıcıyı burada tutacağız
+    // Holds the currently logged-in username for the running application
     private static String currentUsername;
 
     public static String getCurrentUsername() {
